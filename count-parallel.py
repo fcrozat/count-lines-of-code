@@ -91,7 +91,8 @@ def process_tarfile(filename, orig_name):
     with tempfile.TemporaryDirectory() as tmpdir:
         os.chdir(tmpdir)
         try: #this can fail in case of hardlink pointing to itself
-            sh.bsdtar('-x', '-C', tmpdir, '--no-same-permissions', '-o', '--no-xattrs', '-n', '-f', filename)
+            # use a bogus passphrase to fail without getting stuck in a loop for encrypted archives
+            sh.bsdtar('-x', '-C', tmpdir, '--no-same-permissions', '-o', '--no-xattrs', '--passphrase', 'ahojbabi', '-n', '-f', filename)
         except sh.ErrorReturnCode_1 as error: #fail silently and skip if not debugging
             if debug:
                 print(error)

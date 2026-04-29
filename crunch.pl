@@ -18,7 +18,12 @@ my %hash = ();
 while (<STDIN>) {
 	 ($code_old, $diff_old) = ($code, $diff);
 	 $prefix_old = $prefix;
-	 ($name, $code, $diff) = split(" ", $_);
+	 my @fields = split(" ", $_);
+	 $name = $fields[0];
+	 # count-parallel.py emits: name code docs empty diff_add diff_rem ...
+	 # match count.py semantics: code = code+docs+empty, diff = patch additions
+	 $code = ($fields[1] // 0) + ($fields[2] // 0) + ($fields[3] // 0);
+	 $diff = $fields[4] // 0;
 	 my @shortname = split("\\.", $name);
 	 my @splitted_name = split("-", $shortname[0]);
 	 if (defined $splitted_name[1]) { #there is some - in name

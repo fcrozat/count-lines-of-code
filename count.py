@@ -226,6 +226,8 @@ if args.file:
     global_adds = package_list[filename][3] #currently, we use patch additions as a metric
 else:
     for filename in os.listdir(os.getcwd()):
+        if not filename.endswith('.src.rpm'):
+            continue
         package_list[filename] = process_one_file(filename)
         cl = package_list[filename][0] + package_list[filename][1] + package_list[filename][2]
         dl = package_list[filename][3]

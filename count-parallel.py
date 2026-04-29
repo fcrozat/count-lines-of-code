@@ -217,7 +217,7 @@ os.chdir(wdir)
 if __name__ == '__main__':
     glob_tmpdir = tempfile.TemporaryDirectory()
     pool = Pool(processes)
-    filenames = os.listdir(os.getcwd())
+    filenames = [f for f in os.listdir(os.getcwd()) if f.endswith('.src.rpm')]
     pool.map(process_one_file, filenames)
     pool.close()
     pool.join()
